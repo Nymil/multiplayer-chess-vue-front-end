@@ -31,7 +31,8 @@ export default {
             errorMessage: '',
             showPopup: false,
             isJoin: false,
-            opponent: ''
+            opponent: '',
+            clickedGameToJoin: null
         }
     },
     methods: {
@@ -43,15 +44,28 @@ export default {
             this.isJoin = true;
             this.opponent = game.players[0];
             this.showPopup = true;
+            this.clickedGameToJoin = game;
         },
         closePopup() {
             this.showPopup = false;
+            this.errorMessage = '';
+            this.clickedGameToJoin = null;
         },
         async getGames() {
             this.games = await this.service.getJoinableGames();
         },
         async handlePopupSubmit(name) {
-            console.log(`Submitting popup with name: ${name}`);
+            try {
+                let gameId;
+                if (this.isJoin) {
+                    gameId = await this.service.joinGame(name, this.clickedGameToJoin.id);
+                } else {
+                    gameId = await this.service.createGame(name);
+                }
+                this.$router.push({ name: 'Game', params: { gameId: gameId } });
+            } catch (error) {
+                this.errorMessage = error.message;
+            }
         },
         
     },
