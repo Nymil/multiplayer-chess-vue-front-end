@@ -13,6 +13,8 @@ export default class GameService {
     }
 
     async createGame(yourName) {
+        yourName = yourName.trim();
+
         if (yourName === '') {
             throw new Error('Name must not be empty');
         }
@@ -37,6 +39,8 @@ export default class GameService {
     }
 
     async joinGame(yourName, gameId) {
+        yourName = yourName.trim();
+
         if (yourName === '') {
             throw new Error('Name must not be empty');
         }
