@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import the components
-import LandingPage from "../views/LandingPage.vue"
+import LandingPage from "../views/LandingPage.vue";
+import GameSelection from "../views/GameSelection.vue";
 
 const routes = [
     {
@@ -9,7 +10,12 @@ const routes = [
         name: "LandingPage",
         component: LandingPage
     },
-]
+    {
+        path: "/game-selection",
+        name: "GameSelection",
+        component: GameSelection
+    }
+];
 
 const router = createRouter({
     history: createWebHistory(),
