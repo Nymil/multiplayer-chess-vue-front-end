@@ -6,34 +6,54 @@
                 <p>No games available at the moment. Create one to play.</p>
             </div>
             <div v-for="game in games" :key="game.id">
-                <GameCard :game="game" />
+                <GameCard :game="game" @join="joinGame" />
             </div>
         </div>
         <button @click.prevent="createGame" class="create-game-button">Create Game</button>
+        <EnterGamePopup v-if="showPopup" :isJoin="isJoin" :errorMessage="errorMessage" :opponent="opponent" @submit="handlePopupSubmit" @close="closePopup" />
     </section>
 </template>
 
 <script>
 import GameCard from '../modules/Game/Components/GameCard.vue';
 import GameService from '../modules/Game/Services/GameService.js';
+import EnterGamePopup from '../modules/Game/Components/EnterGamePopup.vue';
 
 export default {
     components: {
-        GameCard
+        GameCard,
+        EnterGamePopup
     },
     data() {
         return {
             service: new GameService(),
-            games: []
+            games: [],
+            errorMessage: '',
+            showPopup: false,
+            isJoin: false,
+            opponent: ''
         }
     },
     methods: {
         createGame() {
-            console.log('Creating a new game');
+            this.isJoin = false;
+            this.showPopup = true;
+        },
+        joinGame(game) {
+            this.isJoin = true;
+            this.opponent = game.players[0];
+            this.showPopup = true;
+        },
+        closePopup() {
+            this.showPopup = false;
         },
         async getGames() {
             this.games = await this.service.getJoinableGames();
-        }
+        },
+        async handlePopupSubmit(name) {
+            console.log(`Submitting popup with name: ${name}`);
+        },
+        
     },
     created() {
         this.getGames();

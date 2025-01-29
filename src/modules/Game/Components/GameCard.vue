@@ -19,9 +19,10 @@ export default {
     },
     methods: {
         joinGame() {
-            console.log(`Joining game with id: ${this.game.id}`);
+            this.$emit('join', this.game);
         }
-    }
+    },
+    emits: ['join']
 };
 </script>
 
