@@ -15,6 +15,7 @@
 
 <script>
 import GameCard from '../modules/Game/Components/GameCard.vue';
+import GameService from '../modules/Game/Services/GameService.js';
 
 export default {
     components: {
@@ -22,29 +23,20 @@ export default {
     },
     data() {
         return {
-            games: [
-                {
-                    id: 'a6d5f0df-6299-4e52-aff9-d3237e5712f9',
-                    players: ['george'],
-                    state: 'Waiting'
-                },
-                {
-                    id: 'a6d5f0df-6299-4e52-aff9-d3237e5ze2f9',
-                    players: ['jeff'],
-                    state: 'Waiting'
-                },
-                {
-                    id: 'a6d5f0df-6299-4e52-aff9-d3237e5ze2f9',
-                    players: ['arno'],
-                    state: 'Waiting'
-                },
-            ]
+            service: new GameService(),
+            games: []
         }
     },
     methods: {
         createGame() {
             console.log('Creating a new game');
+        },
+        async getGames() {
+            this.games = await this.service.getJoinableGames();
         }
+    },
+    created() {
+        this.getGames();
     }
 };
 </script>
