@@ -26,16 +26,19 @@ h1 {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 3rem;
+    border-radius: 12px;
+    margin-top: 4rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-color: #6e8efb;
 }
 
 #to-game-button:hover {
     background: linear-gradient(135deg, #a777e3, #6e8efb);
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: #a777e3;
 }
-
 </style>
