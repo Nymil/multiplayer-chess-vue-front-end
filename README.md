@@ -1,5 +1,11 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+# Chess multiplayer vue front end
+## Description
+This is a front end that communicates with a chess api that i made so that multiple chess game lobbies can be made and ran simultaniously, this way you can play with a friend.
+The server used can be found in [this](https://github.com/Nymil/multiplayer-chess-api) repository.
+## How to run
+Download the repository and run the following commands.
+```bash
+npm install
+npm run dev
+```
+This requires the dotnet api to be running on http://localhost:5033 
