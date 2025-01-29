@@ -5,7 +5,7 @@
 
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,4 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
+body {
+  background: linear-gradient(180deg, rgba(8,7,7,1) 0%, rgba(24,24,28,1) 77%, rgba(35,37,37,1) 100%) no-repeat;
+}
