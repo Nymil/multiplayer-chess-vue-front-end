@@ -79,6 +79,12 @@ export default {
     flex-direction: column;
     width: 70vh;
     height: 70vh;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 0.5rem solid transparent;
+    background: linear-gradient(white, white), linear-gradient(135deg, #6e8efb, #a777e3);
+    background-origin: border-box;
+    background-clip: content-box, border-box; 
 }
 
 .chess-row {

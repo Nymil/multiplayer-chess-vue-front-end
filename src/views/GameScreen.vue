@@ -5,6 +5,7 @@
     </section>
     <div id="main-game-content">
         <chess-board :fen="chessBoardFen" />
+        <captured-pieces :captured-pieces="capturedPieces" />
     </div>
     <p id="current-player">Current player: {{ currentPlayer }}</p>
 </template>
@@ -12,10 +13,12 @@
 <script>
 import GameService from '../modules/Game/Services/GameService.js';
 import ChessBoard from '../modules/Game/Components/ChessBoard.vue';
+import CapturedPieces from '../modules/Game/Components/CapturedPieces.vue';
 
 export default {
     components: {
         ChessBoard,
+        CapturedPieces
     },
     data() {
         return {
@@ -35,6 +38,8 @@ export default {
     },
     computed: {
         opponent() {
+            if (this.gameDetail === null) return "";
+
             if (this.gameDetail.players[0] !== this.yourUsername) {
                 return this.gameDetail.players[0];
             } else if (this.gameDetail.players.length > 1 && this.gameDetail.players[1] !== this.yourUsername) {
@@ -54,6 +59,9 @@ export default {
             } else {
                 return this.opponent;
             }
+        },
+        capturedPieces() {
+            return this.gameDetail?.capturedPieces || { white: [], black: [] };
         }
     }
 }
@@ -90,7 +98,7 @@ export default {
 }
 
 #current-player {
-    font-size: 1.5rem;
+    font-size: 2rem;
     text-align: center;
     margin: 2rem;
     width: 100vw;
