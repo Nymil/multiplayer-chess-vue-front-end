@@ -63,4 +63,14 @@ export default class GameService {
 
         return json.gameId;
     }
+
+    async getGameDetail(gameId) {
+        try {
+            const response = await fetch(`${BASE_URL}/games/${gameId}`);
+            const json = await response.json();
+            return json;
+        } catch (e) {
+            return null;
+        }
+    }
 }

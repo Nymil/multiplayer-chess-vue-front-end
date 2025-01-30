@@ -62,6 +62,7 @@ export default {
                 } else {
                     gameId = await this.service.createGame(name);
                 }
+                localStorage.setItem('userName', name);
                 this.$router.push({ name: 'Game', params: { gameId: gameId } });
             } catch (error) {
                 this.errorMessage = error.message;
