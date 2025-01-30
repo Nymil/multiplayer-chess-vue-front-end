@@ -22,10 +22,7 @@ export default {
             service: new GameService(),
             gameId: this.$route.params.gameId,
             gameDetail: null,
-            yourUsername: localStorage.getItem('userName'),
-            opponent: '',
-            currentPlayer: 'You',
-            chessBoardFen: '8/8/8/8/8/8/8/8',
+            yourUsername: localStorage.getItem('userName')
         }
     },
     created() {
@@ -34,32 +31,29 @@ export default {
     methods: {
         async getGameDetail() {
             this.gameDetail = await this.service.getGameDetail(this.gameId);
-        },
-        setOpponent() {
-            if (this.opponent !== "") return; // opponent name never changes
-
-            if (this.gameDetail.players[0] !== this.yourUsername) {
-                this.opponent = this.gameDetail.players[0];
-            } else if (this.gameDetail.players.length > 1 && this.gameDetail.players[1] !== this.yourUsername) {
-                this.opponent = this.gameDetail.players[1];
-            }
-        },
-        setCurrentPlayer() {
-            if (this.gameDetail.currentPlayer === this.yourUsername) {
-                this.currentPlayer = 'You';
-            } else {
-                this.currentPlayer = this.opponent;
-            }
-        },
-        setChessBoardFen() {
-            this.chessBoardFen = this.gameDetail?.board.split(" ")[0] || '8/8/8/8/8/8/8/8';
         }
     },
-    watch: {
-        gameDetail: function() {
-            this.setOpponent();
-            this.setChessBoardFen();
-            this.setCurrentPlayer();
+    computed: {
+        opponent() {
+            if (this.gameDetail.players[0] !== this.yourUsername) {
+                return this.gameDetail.players[0];
+            } else if (this.gameDetail.players.length > 1 && this.gameDetail.players[1] !== this.yourUsername) {
+                return this.gameDetail.players[1];
+            }
+            
+            return "";
+        },
+        chessBoardFen() {
+            return this.gameDetail?.board.split(" ")[0] || '8/8/8/8/8/8/8/8';
+        },
+        currentPlayer() {
+            if (this.gameDetail === null) return "";
+
+            if (this.gameDetail.currentPlayer === this.yourUsername) {
+                return 'You';
+            } else {
+                return this.opponent;
+            }
         }
     }
 }

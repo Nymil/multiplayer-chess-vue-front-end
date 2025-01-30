@@ -1,11 +1,11 @@
 <template>
     <div id="chess-board">
-        <div v-for="(row, rowIndex) in grid" :key="rowIndex" class="chess-row">
+        <div v-for="(row, rowIndex) in displayedGrid" :key="rowIndex" class="chess-row">
             <chess-square
                 v-for="(squarePiece, colIndex) in row"
                 :piece-char="squarePiece || ''"
                 :col="colIndex"
-                :row="rowIndex"
+                :row="getRowIndex(rowIndex)"
                 :is-selected="false"
                 :is-legal-move="false"
             />
@@ -29,6 +29,7 @@ export default {
     data() {
         return {
             grid: [], // 2D array in the form of (null | char)[8][8]
+            yourColor: localStorage.getItem('yourColor') || 'white',
         }
     },
     watch: {
@@ -37,6 +38,11 @@ export default {
             handler(newFen) {
                 this.grid = this.createGrid(newFen);
             }
+        }
+    },
+    computed: {
+        displayedGrid() {
+            return this.yourColor === 'black' ? this.grid.slice().reverse() : this.grid;
         }
     },
     methods: {
@@ -59,6 +65,9 @@ export default {
             }
 
             return grid;
+        },
+        getRowIndex(rowIndex) {
+            return this.yourColor === 'black' ? 7 - rowIndex : rowIndex;
         }
     }
 }

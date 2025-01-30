@@ -59,8 +59,10 @@ export default {
                 let gameId;
                 if (this.isJoin) {
                     gameId = await this.service.joinGame(name, this.clickedGameToJoin.id);
+                    localStorage.setItem('yourColor', 'black');
                 } else {
                     gameId = await this.service.createGame(name);
+                    localStorage.setItem('yourColor', 'white');
                 }
                 localStorage.setItem('userName', name);
                 this.$router.push({ name: 'Game', params: { gameId: gameId } });
