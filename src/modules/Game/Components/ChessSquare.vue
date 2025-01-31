@@ -9,6 +9,7 @@
         }"
         :data-piece="piece"
         :data-piece-color="pieceColor"
+        @click.prevent="handleClick"
     />
 </template>
 
@@ -91,8 +92,16 @@ export default {
         },
         setSquareColor() {
             this.isWhiteSquare = (this.col + this.row) % 2 === 0;
+        },
+        handleClick() {
+            this.$emit('square-clicked', {
+                pieceColor: this.pieceColor,
+                piece: this.piece,
+                location: this.locationString
+            });
         }
-    }
+    },
+    emits: ['square-clicked']
 }
 </script>
 

@@ -4,7 +4,7 @@
         <h1>Chess game😲</h1>
     </section>
     <div id="main-game-content">
-        <chess-board :fen="chessBoardFen" />
+        <chess-board :fen="chessBoardFen" @square-clicked="handleSquareClick" />
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
     <p id="current-player">Current player: {{ currentPlayer }}</p>
@@ -14,6 +14,11 @@
 import GameService from '../modules/Game/Services/GameService.js';
 import ChessBoard from '../modules/Game/Components/ChessBoard.vue';
 import CapturedPieces from '../modules/Game/Components/CapturedPieces.vue';
+
+const shouldStopPolling = (detail, yourUsername) => {
+    return (detail.state === "InProgress" && detail.currentPlayer === yourUsername)
+        || detail.state === "Finished";
+}
 
 export default {
     components: {
@@ -29,26 +34,28 @@ export default {
         }
     },
     created() {
-        this.getGameDetail();
+        this.getInitialGameDetail();
     },
     methods: {
-        async getGameDetail() {
+        async getInitialGameDetail() {
             this.gameDetail = await this.service.getGameDetail(this.gameId);
-
-            if (this.gameDetail.currentPlayer !== this.yourUsername) {
-                this.startPolling();
-            }
+            // creater needs to poll to check for the other player to join
+            // and the joiner needs to poll because it is the creater's turn when the game starts
+            this.startPolling();
         },
         async startPolling() {
             while (true) {
                 const detail = await this.service.getGameDetail(this.gameId);
-                if (detail.currentPlayer === this.yourUsername) {
+                if (shouldStopPolling(detail, this.yourUsername)) {
                     this.gameDetail = detail;
                     break;
                 }
 
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
+        },
+        async handleSquareClick(data) {
+            console.log(data);
         }
     },
     computed: {

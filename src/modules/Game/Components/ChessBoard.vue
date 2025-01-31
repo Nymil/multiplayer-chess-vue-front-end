@@ -8,6 +8,7 @@
                 :row="getRowIndex(rowIndex)"
                 :is-selected="false"
                 :is-legal-move="false"
+                @square-clicked="handleSquareClick"
             />
         </div>
     </div>
@@ -68,8 +69,12 @@ export default {
         },
         getRowIndex(rowIndex) {
             return this.yourColor === 'black' ? 7 - rowIndex : rowIndex;
+        },
+        handleSquareClick(data) {
+            this.$emit('square-clicked', data);
         }
-    }
+    },
+    emits: ['square-clicked']
 }
 </script>
 
