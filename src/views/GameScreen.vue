@@ -34,6 +34,21 @@ export default {
     methods: {
         async getGameDetail() {
             this.gameDetail = await this.service.getGameDetail(this.gameId);
+
+            if (this.gameDetail.currentPlayer !== this.yourUsername) {
+                this.startPolling();
+            }
+        },
+        async startPolling() {
+            while (true) {
+                const detail = await this.service.getGameDetail(this.gameId);
+                if (detail.currentPlayer === this.yourUsername) {
+                    this.gameDetail = detail;
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
         }
     },
     computed: {
