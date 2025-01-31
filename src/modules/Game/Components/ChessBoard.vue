@@ -7,7 +7,7 @@
                 :col="colIndex"
                 :row="getRowIndex(rowIndex)"
                 :is-selected="false"
-                :is-legal-move="false"
+                :is-legal-move="isLegalMove(colIndex, getRowIndex(rowIndex))"
                 @square-clicked="handleSquareClick"
             />
         </div>
@@ -26,11 +26,19 @@ export default {
             type: String,
             required: true,
         },
+        legalMoves: {
+            type: Array,
+            required: true,
+            default: () => [],
+        },
+        yourColor: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {
             grid: [], // 2D array in the form of (null | char)[8][8]
-            yourColor: localStorage.getItem('yourColor') || 'white',
         }
     },
     watch: {
@@ -72,6 +80,13 @@ export default {
         },
         handleSquareClick(data) {
             this.$emit('square-clicked', data);
+        },
+        isLegalMove(col, row) {
+            return this.legalMoves.some(moveString => {
+                const coordsLocationString = String.fromCharCode(97 + col) + (8 - row);
+                const moveLocationString = moveString.slice(2, 4);
+                return coordsLocationString === moveLocationString;
+            });
         }
     },
     emits: ['square-clicked']

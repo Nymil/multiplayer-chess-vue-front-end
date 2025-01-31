@@ -77,7 +77,11 @@ export default {
     },
     methods: {
         setPieceData() {
-            if (!this.pieceChar) return;
+            if (!this.pieceChar) {
+                this.piece = null;
+                this.pieceColor = null;
+                return;
+            }
 
             if (this.pieceChar.toUpperCase() === this.pieceChar) {
                 this.pieceColor = 'white';
@@ -117,6 +121,13 @@ export default {
 
 .chess-square.black {
     background-color: #a777e3;
+}
+
+.chess-square.legal-move.white {
+    background-color: #88a1f1;
+}
+.chess-square.legal-move.black {
+    background-color: #7190f3;
 }
 
 [data-piece-color='white'][data-piece='pawn'] {

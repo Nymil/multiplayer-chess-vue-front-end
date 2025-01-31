@@ -4,7 +4,12 @@
         <h1>Chess game😲</h1>
     </section>
     <div id="main-game-content">
-        <chess-board :fen="chessBoardFen" @square-clicked="handleSquareClick" />
+        <chess-board
+            :fen="chessBoardFen"
+            @square-clicked="handleSquareClick"
+            :legal-moves="legalMoves"
+            :your-color="yourColor"
+        />
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
     <p id="current-player">Current player: {{ currentPlayer }}</p>
@@ -30,7 +35,10 @@ export default {
             service: new GameService(),
             gameId: this.$route.params.gameId,
             gameDetail: null,
-            yourUsername: localStorage.getItem('userName')
+            yourColor: localStorage.getItem('yourColor') || 'white',
+            yourUsername: localStorage.getItem('userName'),
+            lastClickedLocation: null,
+            legalMoves: []
         }
     },
     created() {
@@ -54,8 +62,36 @@ export default {
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
         },
-        async handleSquareClick(data) {
-            console.log(data);
+        async handleSquareClick(squareData) { // data is an object with keys location, pieceColor and piece
+            if (this.gameDetail?.state !== "InProgress" || this.currentPlayer !== "You") return;
+
+            if (squareData.pieceColor === this.yourColor) {
+                await this.showValidMoves(squareData);
+                return;
+            }
+
+            if (!this.lastClickedLocation) {
+                return;
+            }
+
+            const moveToMake = this.lastClickedLocation + squareData.location;
+
+            if (this.legalMoves.includes(moveToMake)) {
+                await this.makeMove(moveToMake);
+            } else {
+                this.lastClickedLocation = null;
+                this.legalMoves = [];
+            }
+        },
+        async showValidMoves(squareData) {
+            this.legalMoves = await this.service.getValidMoves(this.gameId, squareData.location);
+            this.lastClickedLocation = squareData.location;
+        },
+        async makeMove(moveString) {
+            this.gameDetail = await this.service.makeMove(this.gameId, moveString);
+            this.lastClickedLocation = null;
+            this.legalMoves = [];
+            this.startPolling();
         }
     },
     computed: {

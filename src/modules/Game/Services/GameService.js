@@ -73,4 +73,42 @@ export default class GameService {
             return null;
         }
     }
+
+    async getValidMoves(gameId, locationString) {
+        try {
+            const response = await fetch(`${BASE_URL}/games/${gameId}/valid-moves?position=${locationString}`);
+            const json = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(json.error);
+            }
+
+            return json.validMoves;
+        } catch(e) {
+            return [];
+        }
+    }
+
+    async makeMove(gameId, moveString) {
+        try {
+            const response = await fetch(`${BASE_URL}/games/${gameId}/move`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "move": moveString
+                })
+            });
+            const json = await response.json();
+
+            if (!response.ok) {
+                throw new Error(json.error);
+            }
+
+            return json;
+        } catch (e) {
+            return {};
+        }
+    }
 }
