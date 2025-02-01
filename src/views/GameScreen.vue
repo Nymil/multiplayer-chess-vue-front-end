@@ -17,6 +17,7 @@
     <!-- popups -->
     <waiting-popup v-show="popups.showWaitingPopup" />
     <promotion-popup v-show="popups.showPromotionPopup" :player-color="yourColor" @promotion-piece-selected="makePromotion" @close-promotion-popup="cancelPromotion" />
+    <result-popup v-show="popups.showResultPopup" :reason="reason" :winner="winner" />
 </template>
 
 <script>
@@ -25,6 +26,7 @@ import ChessBoard from '../modules/Game/Components/ChessBoard.vue';
 import CapturedPieces from '../modules/Game/Components/CapturedPieces.vue';
 import WaitingPopup from '../modules/Game/Components/WaitingPopup.vue';
 import PromotionPopup from '../modules/Game/Components/PromotionPopup.vue';
+import ResultPopup from '../modules/Game/Components/ResultPopup.vue';
 
 const shouldStopPolling = (detail, yourUsername) => {
     return (detail.state === "InProgress" && detail.currentPlayer === yourUsername)
@@ -36,7 +38,8 @@ export default {
         ChessBoard,
         CapturedPieces,
         WaitingPopup,
-        PromotionPopup
+        PromotionPopup,
+        ResultPopup
     },
     data() {
         return {
@@ -167,6 +170,12 @@ export default {
         },
         capturedPieces() {
             return this.gameDetail?.capturedPieces || { white: [], black: [] };
+        },
+        winner() {
+            return this.gameDetail?.result?.winner || null;
+        },
+        reason() {
+            return this.gameDetail?.result?.reason || null;
         }
     }
 }
