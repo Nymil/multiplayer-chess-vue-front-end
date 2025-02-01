@@ -1,9 +1,9 @@
 <template>
-    <section id="game-header">
-        <h2>Opponent: {{ opponent }}</h2>
+    <section v-show="gameDetail !== null" id="game-header">
+        <h2 v-if="opponent !== ''">Opponent: {{ opponent }}</h2>
         <h1>Chess game😲</h1>
     </section>
-    <div id="main-game-content">
+    <div v-show="gameDetail !== null" id="main-game-content">
         <chess-board
             :fen="chessBoardFen"
             @square-clicked="handleSquareClick"
@@ -12,13 +12,15 @@
         />
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
-    <p id="current-player">Current player: {{ currentPlayer }}</p>
+    <p v-show="gameDetail !== null" id="current-player">Current player: {{ currentPlayer }}</p>
+    <waiting-popup v-show="popups.showWaitingPopup" />
 </template>
 
 <script>
 import GameService from '../modules/Game/Services/GameService.js';
 import ChessBoard from '../modules/Game/Components/ChessBoard.vue';
 import CapturedPieces from '../modules/Game/Components/CapturedPieces.vue';
+import WaitingPopup from '../modules/Game/Components/WaitingPopup.vue';
 
 const shouldStopPolling = (detail, yourUsername) => {
     return (detail.state === "InProgress" && detail.currentPlayer === yourUsername)
@@ -28,7 +30,8 @@ const shouldStopPolling = (detail, yourUsername) => {
 export default {
     components: {
         ChessBoard,
-        CapturedPieces
+        CapturedPieces,
+        WaitingPopup
     },
     data() {
         return {
@@ -38,7 +41,12 @@ export default {
             yourColor: localStorage.getItem('yourColor') || 'white',
             yourUsername: localStorage.getItem('userName'),
             lastClickedLocation: null,
-            legalMoves: []
+            legalMoves: [],
+            popups: {
+                showPromotionPopup: false,
+                showResultPopup: false,
+                showWaitingPopup: false
+            }
         }
     },
     created() {
@@ -47,6 +55,9 @@ export default {
     methods: {
         async getInitialGameDetail() {
             this.gameDetail = await this.service.getGameDetail(this.gameId);
+            if (this.gameDetail.state === "Waiting") {
+                this.popups = { ...this.popups, showWaitingPopup: true };
+            }
             // creater needs to poll to check for the other player to join
             // and the joiner needs to poll because it is the creater's turn when the game starts
             this.startPolling();
@@ -56,6 +67,11 @@ export default {
                 const detail = await this.service.getGameDetail(this.gameId);
                 if (shouldStopPolling(detail, this.yourUsername)) {
                     this.gameDetail = detail;
+
+                    if (detail.state === "Finished") {
+                        this.popups = { ...this.popups, showResultPopup: true };
+                    }
+                    this.popups = { ...this.popups, showWaitingPopup: false };
                     break;
                 }
 
