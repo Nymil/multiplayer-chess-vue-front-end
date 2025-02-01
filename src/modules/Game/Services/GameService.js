@@ -89,9 +89,9 @@ export default class GameService {
         }
     }
 
-    async makeMove(gameId, moveString) {
+    async makeMove(gameId, moveString, promotionPiece = null) {
         try {
-            const response = await fetch(`${BASE_URL}/games/${gameId}/move`, {
+            const response = await fetch(`${BASE_URL}/games/${gameId}/move?promotionPiece=${promotionPiece}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

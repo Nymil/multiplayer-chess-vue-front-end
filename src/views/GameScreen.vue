@@ -13,7 +13,10 @@
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
     <p v-show="gameDetail !== null" id="current-player">Current player: {{ currentPlayer }}</p>
+    
+    <!-- popups -->
     <waiting-popup v-show="popups.showWaitingPopup" />
+    <promotion-popup v-show="popups.showPromotionPopup" :player-color="yourColor" @promotion-piece-selected="makePromotion" @close-promotion-popup="cancelPromotion" />
 </template>
 
 <script>
@@ -21,6 +24,7 @@ import GameService from '../modules/Game/Services/GameService.js';
 import ChessBoard from '../modules/Game/Components/ChessBoard.vue';
 import CapturedPieces from '../modules/Game/Components/CapturedPieces.vue';
 import WaitingPopup from '../modules/Game/Components/WaitingPopup.vue';
+import PromotionPopup from '../modules/Game/Components/PromotionPopup.vue';
 
 const shouldStopPolling = (detail, yourUsername) => {
     return (detail.state === "InProgress" && detail.currentPlayer === yourUsername)
@@ -31,7 +35,8 @@ export default {
     components: {
         ChessBoard,
         CapturedPieces,
-        WaitingPopup
+        WaitingPopup,
+        PromotionPopup
     },
     data() {
         return {
@@ -41,6 +46,8 @@ export default {
             yourColor: localStorage.getItem('yourColor') || 'white',
             yourUsername: localStorage.getItem('userName'),
             lastClickedLocation: null,
+            lastClickedPiece: null,
+            clickedLocationForPromotion: null,
             legalMoves: [],
             popups: {
                 showPromotionPopup: false,
@@ -93,19 +100,43 @@ export default {
             const moveToMake = this.lastClickedLocation + squareData.location;
 
             if (this.legalMoves.includes(moveToMake)) {
+                // check for promotion first
+                if (this.lastClickedPiece.toLowerCase() === "pawn" && (squareData.location[1] === '1' || squareData.location[1] === '8')) {
+                    this.clickedLocationForPromotion = squareData.location;
+                    this.popups = { ...this.popups, showPromotionPopup: true };
+                    return;
+                }
+
                 await this.makeMove(moveToMake);
             } else {
                 this.lastClickedLocation = null;
+                this.lastClickedPiece = null;
                 this.legalMoves = [];
             }
+        },
+        cancelPromotion() {
+            this.clickedLocationForPromotion = null;
+            this.popups = { ...this.popups, showPromotionPopup: false };
+        },
+        async makePromotion(piece) {
+            const moveString = this.lastClickedLocation + this.clickedLocationForPromotion;
+            this.gameDetail = await this.service.makeMove(this.gameId, moveString, piece);
+            this.lastClickedLocation = null;
+            this.lastClickedPiece = null;
+            this.legalMoves = [];
+            this.clickedLocationForPromotion = null;
+            this.popups = { ...this.popups, showPromotionPopup: false };
+            this.startPolling();
         },
         async showValidMoves(squareData) {
             this.legalMoves = await this.service.getValidMoves(this.gameId, squareData.location);
             this.lastClickedLocation = squareData.location;
+            this.lastClickedPiece = squareData.piece;
         },
         async makeMove(moveString) {
             this.gameDetail = await this.service.makeMove(this.gameId, moveString);
             this.lastClickedLocation = null;
+            this.lastClickedPiece = null;
             this.legalMoves = [];
             this.startPolling();
         }
