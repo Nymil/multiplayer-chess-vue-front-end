@@ -1,11 +1,7 @@
+const BASE_URL = "https://chess-api.matticeheyzak.software/api";
+
 export default class GameService {
-    async getBaseUrl() {
-        return (await fetch('../../../config.json').then(res => res.json()))['base-url'];
-    }
-
     async getJoinableGames() {
-        const BASE_URL = await this.getBaseUrl();
-
         try {
             const response = await fetch(`${BASE_URL}/games`);
             const json = await response.json();
@@ -17,8 +13,6 @@ export default class GameService {
     }
 
     async createGame(yourName) {
-        const BASE_URL = await this.getBaseUrl();
-
         yourName = yourName.trim();
 
         if (yourName === '') {
@@ -45,8 +39,6 @@ export default class GameService {
     }
 
     async joinGame(yourName, gameId) {
-        const BASE_URL = await this.getBaseUrl();
-
         yourName = yourName.trim();
 
         if (yourName === '') {
@@ -73,8 +65,6 @@ export default class GameService {
     }
 
     async getGameDetail(gameId) {
-        const BASE_URL = await this.getBaseUrl();
-
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}`);
             const json = await response.json();
@@ -85,8 +75,6 @@ export default class GameService {
     }
 
     async getValidMoves(gameId, locationString) {
-        const BASE_URL = await this.getBaseUrl();
-
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}/valid-moves?position=${locationString}`);
             const json = await response.json();
@@ -102,8 +90,6 @@ export default class GameService {
     }
 
     async makeMove(gameId, moveString, promotionPiece = null) {
-        const BASE_URL = await this.getBaseUrl();
-
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}/move?promotionPiece=${promotionPiece}`, {
                 method: 'PATCH',
