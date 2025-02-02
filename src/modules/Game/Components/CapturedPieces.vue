@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         getPieceImage(piece, color) {
-            return `../../../src/assets/images/pieces/${color.toLowerCase()}-${piece.toLowerCase()}.png`
+            return `./assets/images/pieces/${color.toLowerCase()}-${piece.toLowerCase()}.png`;
         }
     }
 }

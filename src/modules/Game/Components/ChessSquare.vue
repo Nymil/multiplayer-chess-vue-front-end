@@ -131,50 +131,50 @@ export default {
 }
 
 [data-piece-color='white'][data-piece='pawn'] {
-    background-image: url(../../../assets/images/pieces/white-pawn.png);
+    background-image: url(/assets/images/pieces/white-pawn.png);
 }
 
 [data-piece-color='white'][data-piece='rook'] {
-    background-image: url(../../../assets/images/pieces/white-rook.png);
+    background-image: url(/assets/images/pieces/white-rook.png);
 }
 
 [data-piece-color='white'][data-piece='knight'] {
-    background-image: url(../../../assets/images/pieces/white-knight.png);
+    background-image: url(/assets/images/pieces/white-knight.png);
 }
 
 [data-piece-color='white'][data-piece='bishop'] {
-    background-image: url(../../../assets/images/pieces/white-bishop.png);
+    background-image: url(/assets/images/pieces/white-bishop.png);
 }
 
 [data-piece-color='white'][data-piece='queen'] {
-    background-image: url(../../../assets/images/pieces/white-queen.png);
+    background-image: url(/assets/images/pieces/white-queen.png);
 }
 
 [data-piece-color='white'][data-piece='king'] {
-    background-image: url(../../../assets/images/pieces/white-king.png);
+    background-image: url(/assets/images/pieces/white-king.png);
 }
 
 [data-piece-color='black'][data-piece='pawn'] {
-    background-image: url(../../../assets/images/pieces/black-pawn.png);
+    background-image: url(/assets/images/pieces/black-pawn.png);
 }
 
 [data-piece-color='black'][data-piece='rook'] {
-    background-image: url(../../../assets/images/pieces/black-rook.png);
+    background-image: url(/assets/images/pieces/black-rook.png);
 }
 
 [data-piece-color='black'][data-piece='knight'] {
-    background-image: url(../../../assets/images/pieces/black-knight.png);
+    background-image: url(/assets/images/pieces/black-knight.png);
 }
 
 [data-piece-color='black'][data-piece='bishop'] {
-    background-image: url(../../../assets/images/pieces/black-bishop.png);
+    background-image: url(/assets/images/pieces/black-bishop.png);
 }
 
 [data-piece-color='black'][data-piece='queen'] {
-    background-image: url(../../../assets/images/pieces/black-queen.png);
+    background-image: url(/assets/images/pieces/black-queen.png);
 }
 
 [data-piece-color='black'][data-piece='king'] {
-    background-image: url(../../../assets/images/pieces/black-king.png);
+    background-image: url(/assets/images/pieces/black-king.png);
 }
 </style>

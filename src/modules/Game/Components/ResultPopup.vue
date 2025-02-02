@@ -14,11 +14,12 @@ export default {
         winner: {
             type: String,
             required: true,
-            default: null
+            default: ""
         },
         reason: {
             type: String,
             required: true,
+            default: ""
         }
     },
     methods: {

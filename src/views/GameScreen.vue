@@ -172,10 +172,10 @@ export default {
             return this.gameDetail?.capturedPieces || { white: [], black: [] };
         },
         winner() {
-            return this.gameDetail?.result?.winner || null;
+            return this.gameDetail?.result?.winner || "";
         },
         reason() {
-            return this.gameDetail?.result?.reason || null;
+            return this.gameDetail?.result?.reason || "";
         }
     }
 }

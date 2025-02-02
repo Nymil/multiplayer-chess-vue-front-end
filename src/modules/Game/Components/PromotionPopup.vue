@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         getPieceImage(piece) {
-            return `../../../src/assets/images/pieces/${this.playerColor.toLowerCase()}-${piece}.png`;
+            return `./assets/images/pieces/${this.playerColor.toLowerCase()}-${piece.toLowerCase()}.png`;
         },
         handlePromotionPieceClick(piece) {
             this.$emit('promotion-piece-selected', piece);
