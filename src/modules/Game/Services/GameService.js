@@ -4,7 +4,7 @@ export default class GameService {
     }
 
     async getJoinableGames() {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         try {
             const response = await fetch(`${BASE_URL}/games`);
@@ -17,7 +17,7 @@ export default class GameService {
     }
 
     async createGame(yourName) {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         yourName = yourName.trim();
 
@@ -45,7 +45,7 @@ export default class GameService {
     }
 
     async joinGame(yourName, gameId) {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         yourName = yourName.trim();
 
@@ -73,7 +73,7 @@ export default class GameService {
     }
 
     async getGameDetail(gameId) {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}`);
@@ -85,7 +85,7 @@ export default class GameService {
     }
 
     async getValidMoves(gameId, locationString) {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}/valid-moves?position=${locationString}`);
@@ -102,7 +102,7 @@ export default class GameService {
     }
 
     async makeMove(gameId, moveString, promotionPiece = null) {
-        const BASE_URL = this.getBaseUrl();
+        const BASE_URL = await this.getBaseUrl();
 
         try {
             const response = await fetch(`${BASE_URL}/games/${gameId}/move?promotionPiece=${promotionPiece}`, {
