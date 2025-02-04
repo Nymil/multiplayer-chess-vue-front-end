@@ -117,6 +117,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    position: relative;
 }
 
 .chess-square.black {
@@ -128,6 +129,17 @@ export default {
 }
 .chess-square.legal-move.black {
     background-color: #7190f3;
+}
+
+.chess-square.selected::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 70%, rgba(0, 81, 255, 0.5) 70%);
+    pointer-events: none;
 }
 
 [data-piece-color='white'][data-piece='pawn'] {

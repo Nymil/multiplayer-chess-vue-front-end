@@ -6,7 +6,7 @@
                 :piece-char="squarePiece || ''"
                 :col="colIndex"
                 :row="getRowIndex(rowIndex)"
-                :is-selected="false"
+                :is-selected="isSelected(colIndex, getRowIndex(rowIndex))"
                 :is-legal-move="isLegalMove(colIndex, getRowIndex(rowIndex))"
                 @square-clicked="handleSquareClick"
             />
@@ -34,6 +34,11 @@ export default {
         yourColor: {
             type: String,
             required: true
+        },
+        selectedPieceLocation: {
+            type: String,
+            required: true,
+            default: null
         }
     },
     data() {
@@ -83,10 +88,16 @@ export default {
         },
         isLegalMove(col, row) {
             return this.legalMoves.some(moveString => {
-                const coordsLocationString = String.fromCharCode(97 + col) + (8 - row);
+                const coordsLocationString = this.stringFromCoords(col, row);
                 const moveLocationString = moveString.slice(2, 4);
                 return coordsLocationString === moveLocationString;
             });
+        },
+        isSelected(col, row) {
+            return this.selectedPieceLocation === this.stringFromCoords(col, row);
+        },
+        stringFromCoords(col, row) {
+            return String.fromCharCode(97 + col) + (8 - row);
         }
     },
     emits: ['square-clicked']

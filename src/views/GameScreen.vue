@@ -9,6 +9,7 @@
             @square-clicked="handleSquareClick"
             :legal-moves="legalMoves"
             :your-color="yourColor"
+            :selected-piece-location="lastClickedLocation"
         />
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
