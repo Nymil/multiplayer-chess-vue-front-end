@@ -10,6 +10,7 @@
             :legal-moves="legalMoves"
             :your-color="yourColor"
             :selected-piece-location="lastClickedLocation"
+            :last-move="lastMove"
         />
         <captured-pieces :captured-pieces="capturedPieces" />
     </div>
@@ -177,6 +178,9 @@ export default {
         },
         reason() {
             return this.gameDetail?.result?.reason || "";
+        },
+        lastMove() {
+            return this.gameDetail?.lastMove || "";
         }
     }
 }

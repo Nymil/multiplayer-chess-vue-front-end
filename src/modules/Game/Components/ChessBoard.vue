@@ -8,6 +8,7 @@
                 :row="getRowIndex(rowIndex)"
                 :is-selected="isSelected(colIndex, getRowIndex(rowIndex))"
                 :is-legal-move="isLegalMove(colIndex, getRowIndex(rowIndex))"
+                :is-last-move="isLastMove(colIndex, getRowIndex(rowIndex))"
                 @square-clicked="handleSquareClick"
             />
         </div>
@@ -39,6 +40,11 @@ export default {
             type: String,
             required: true,
             default: null
+        },
+        lastMove: {
+            type: String,
+            required: false,
+            default: ""
         }
     },
     data() {
@@ -98,6 +104,12 @@ export default {
         },
         stringFromCoords(col, row) {
             return String.fromCharCode(97 + col) + (8 - row);
+        },
+        isLastMove(col, row) {
+            const startLocation = this.lastMove.slice(0, 2);
+            const endLocation = this.lastMove.slice(2, 4);
+            const stringCoords = this.stringFromCoords(col, row);
+            return stringCoords === startLocation || stringCoords === endLocation;
         }
     },
     emits: ['square-clicked']

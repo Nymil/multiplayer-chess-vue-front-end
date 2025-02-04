@@ -4,8 +4,9 @@
         :class="{
             'selected': isSelected,
             'legal-move': isLegalMove,
+            'last-move': isLastMove,
             'white': isWhiteSquare,
-            'black': !isWhiteSquare
+            'black': !isWhiteSquare,
         }"
         :data-piece="piece"
         :data-piece-color="pieceColor"
@@ -44,6 +45,11 @@ export default {
             default: false
         },
         isLegalMove: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        isLastMove: {
             type: Boolean,
             required: false,
             default: false
@@ -124,12 +130,20 @@ export default {
     background-color: #a777e3;
 }
 
+.chess-square.last-move.white {
+    background-color: #efb2fc;
+}
+.chess-square.last-move.black {
+    background-color: #db84ec;
+}
+
 .chess-square.legal-move.white {
     background-color: #88a1f1;
 }
 .chess-square.legal-move.black {
     background-color: #7190f3;
 }
+
 
 .chess-square.selected::after {
     content: '';
