@@ -26,7 +26,8 @@ export default class GameService {
             },
             body: JSON.stringify({
                 "username": yourName
-            })
+            }),
+            credentials: 'include'
         });
 
         const json = await response.json();
@@ -45,6 +46,10 @@ export default class GameService {
             throw new Error('Name must not be empty');
         }
 
+        if (yourName === 'You') {
+            throw new Error('Name must not be "You"');
+        }
+
         const response = await fetch(`${BASE_URL}/games/${gameId}/join`, {
             method: 'PATCH',
             headers: {
@@ -52,7 +57,8 @@ export default class GameService {
             },
             body: JSON.stringify({
                 "username": yourName
-            })
+            }),
+            credentials: 'include'
         });
 
         const json = await response.json();
@@ -66,7 +72,9 @@ export default class GameService {
 
     async getGameDetail(gameId) {
         try {
-            const response = await fetch(`${BASE_URL}/games/${gameId}`);
+            const response = await fetch(`${BASE_URL}/games/${gameId}`, {
+                credentials: 'include'
+            });
             const json = await response.json();
             return json;
         } catch (e) {
@@ -76,7 +84,9 @@ export default class GameService {
 
     async getValidMoves(gameId, locationString) {
         try {
-            const response = await fetch(`${BASE_URL}/games/${gameId}/valid-moves?position=${locationString}`);
+            const response = await fetch(`${BASE_URL}/games/${gameId}/valid-moves?position=${locationString}`, {
+                credentials: 'include'
+            });
             const json = await response.json();
             
             if (!response.ok) {
@@ -98,7 +108,8 @@ export default class GameService {
                 },
                 body: JSON.stringify({
                     "move": moveString
-                })
+                }),
+                credentials: 'include'
             });
             const json = await response.json();
 

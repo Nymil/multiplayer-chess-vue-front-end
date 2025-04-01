@@ -8,4 +8,4 @@ Download the repository and run the following commands.
 npm install
 npm run dev
 ```
-This requires the dotnet api to be running on http://localhost:5033 
+You can change the url api in the ./src/modules/Game/Services/GameService.js class
